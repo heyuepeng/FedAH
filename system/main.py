@@ -38,6 +38,7 @@ from flcore.servers.serverper import FedPer
 from flcore.servers.serverapfl import APFL
 from flcore.servers.serverditto import Ditto
 from flcore.servers.serverrep import FedRep
+from flcore.servers.serverah import FedAH
 from flcore.servers.serverhead import FedHead
 from flcore.servers.servergl import FedGL
 from flcore.servers.serverphp import FedPHP
@@ -246,6 +247,12 @@ def run(args):
             args.model.fc = nn.Identity()
             args.model = BaseHeadSplit(args.model, args.head)
             server = FedRep(args, i)
+
+        elif args.algorithm == "FedAH":
+            args.head = copy.deepcopy(args.model.fc)
+            args.model.fc = nn.Identity()
+            args.model = BaseHeadSplit(args.model, args.head)
+            server = FedAH(args, i)
 
         elif args.algorithm == "FedHead":
             args.head = copy.deepcopy(args.model.fc)
