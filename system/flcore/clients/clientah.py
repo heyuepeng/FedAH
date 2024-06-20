@@ -50,56 +50,6 @@ class clientAH(Client):
         # self.model.to(self.device)
         self.model.train()
 
-        # aggregate head
-        # obtain the references of the head parameters
-        params_g = list(self.global_model.head.parameters())
-        params = list(self.model.head.parameters())
-
-        # temp local model only for head weights learning
-        model_t = copy.deepcopy(self.model)
-        params_th = list(model_t.head.parameters())
-        params_tb = list(model_t.base.parameters())
-
-        # frozen base to reduce computational cost in Pytorch
-        for param in params_tb:
-                param.requires_grad = False
-
-        # used to obtain the gradient of model, no need to use optimizer.step(), so lr=0
-        optimizer_t = torch.optim.SGD(model_t.parameters(), lr=0)
-
-        for param_t, param, param_g, weight in zip(params_th, params, params_g, self.head_weights):
-            param_t.data = param + (param_g - param) * weight
-
-        for epoch in range(self.plocal_epochs):
-            for i, (x, y) in enumerate(trainloader):
-                if type(x) == type([]):
-                    x[0] = x[0].to(self.device)
-                else:
-                    x = x.to(self.device)
-                y = y.to(self.device)
-                if self.train_slow:
-                    time.sleep(0.1 * np.abs(np.random.rand()))
-                optimizer_t.zero_grad()
-                output = model_t(x)
-                loss_value = self.loss(output, y)
-                loss_value.backward()
-
-                # update head weights in this batch
-                for param_t, param, param_g, weight in zip(params_th, params,
-                                                        params_g, self.head_weights):
-                    weight.data = torch.clamp(
-                        weight - self.eta * (param_t.grad * (param_g - param)), 0, 1)
-
-                # update temp local model in this batch
-                for param_t, param, param_g, weight in zip(params_th, params,
-                                                        params_g, self.head_weights):
-                    param_t.data = param + (param_g - param) * weight
-
-        # obtain initialized aggregated head
-        for param, param_t in zip(params, params_th):
-            param.data = param_t.data.clone()
-
-
         # train head
         for param in self.model.base.parameters():
             param.requires_grad = False
@@ -163,3 +113,57 @@ class clientAH(Client):
         for new_param, old_param in zip(model.base.parameters(), self.model.base.parameters()):
             old_param.data = new_param.data.clone()
 
+
+    def aggregate_head(self):
+        trainloader = self.load_train_data()
+
+        # aggregate head
+        # obtain the references of the head parameters
+        params_g = list(self.global_model.head.parameters())
+        params = list(self.model.head.parameters())
+
+        # temp local model only for head weights learning
+        model_t = copy.deepcopy(self.model)
+        params_th = list(model_t.head.parameters())
+        params_tb = list(model_t.base.parameters())
+
+        # frozen base to reduce computational cost in Pytorch
+        for param in params_tb:
+            param.requires_grad = False
+        for param_t in params_th:
+            param_t.requires_grad = True
+
+            # used to obtain the gradient of model, no need to use optimizer.step(), so lr=0
+        optimizer_t = torch.optim.SGD(model_t.parameters(), lr=0)
+
+        for param_t, param, param_g, weight in zip(params_th, params, params_g, self.head_weights):
+            param_t.data = param + (param_g - param) * weight
+
+        for epoch in range(self.plocal_epochs):
+            for i, (x, y) in enumerate(trainloader):
+                if type(x) == type([]):
+                    x[0] = x[0].to(self.device)
+                else:
+                    x = x.to(self.device)
+                y = y.to(self.device)
+                if self.train_slow:
+                    time.sleep(0.1 * np.abs(np.random.rand()))
+                optimizer_t.zero_grad()
+                output = model_t(x)
+                loss_value = self.loss(output, y)
+                loss_value.backward()
+
+                # update head weights in this batch
+                for param_t, param, param_g, weight in zip(params_th, params,
+                                                           params_g, self.head_weights):
+                    weight.data = torch.clamp(
+                        weight - self.eta * (param_t.grad * (param_g - param)), 0, 1)
+
+                # update temp local model in this batch
+                for param_t, param, param_g, weight in zip(params_th, params,
+                                                           params_g, self.head_weights):
+                    param_t.data = param + (param_g - param) * weight
+
+        # obtain initialized aggregated head
+        for param, param_t in zip(params, params_th):
+            param.data = param_t.data.clone()

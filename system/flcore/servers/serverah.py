@@ -89,3 +89,4 @@ class FedAH(Server):
 
         for client in self.clients:
             client.set_parameters(self.global_model)
+            client.aggregate_head()

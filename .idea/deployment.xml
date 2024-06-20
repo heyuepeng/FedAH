@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="On explicit save action" serverName="yphe@10.242.187.14:22 password" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="On explicit save action" serverName="yphe@10.242.187.14:22 password (2)" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="yphe@10.242.187.14:22 password">
+      <paths name="yphe@10.242.187.14:22 password (2)">
         <serverdata>
           <mappings>
             <mapping deploy="/home/yphe/project/pycharm-remote/FLlib" local="$PROJECT_DIR$" />
