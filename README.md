@@ -30,7 +30,7 @@ conda env create -f env_cuda_latest.yaml # You may need to downgrade the torch u
 
 ## How to start simulating (examples for FedAH)
 
-- Create proper environments (see [Environments](https://github.com/heyuepeng/FedAH#environments)).
+- Create proper environments (see [Environments](https://github.com/heyuepeng/FedAH/blob/master/env_cuda_latest.yaml)).
 
 - Download [this project](https://github.com/heyuepeng/FedAH) to an appropriate location using [git](https://git-scm.com/).
 
