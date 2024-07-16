@@ -39,7 +39,6 @@ from flcore.servers.serverapfl import APFL
 from flcore.servers.serverditto import Ditto
 from flcore.servers.serverrep import FedRep
 from flcore.servers.serverah import FedAH
-from flcore.servers.serverhead import FedHead
 from flcore.servers.servergl import FedGL
 from flcore.servers.serverphp import FedPHP
 from flcore.servers.serverbn import FedBN
@@ -253,12 +252,6 @@ def run(args):
             args.model.fc = nn.Identity()
             args.model = BaseHeadSplit(args.model, args.head)
             server = FedAH(args, i)
-
-        elif args.algorithm == "FedHead":
-            args.head = copy.deepcopy(args.model.fc)
-            args.model.fc = nn.Identity()
-            args.model = BaseHeadSplit(args.model, args.head)
-            server = FedHead(args, i)
 
         elif args.algorithm == "FedGL":
             args.head = copy.deepcopy(args.model.fc)
@@ -477,7 +470,7 @@ if __name__ == "__main__":
     parser.add_argument('-al', "--alpha", type=float, default=1.0)
     # Ditto / FedRep
     parser.add_argument('-pls', "--plocal_epochs", type=int, default=1)
-    # FedHead/FedGL
+    # FedGL
     parser.add_argument('-agg', "--aggregated", type=bool, default=False,
                         help="aggregated_heads")
     parser.add_argument('-muh', "--mu_head", type=float, default=0.0)
