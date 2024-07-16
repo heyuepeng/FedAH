@@ -1,16 +1,18 @@
 # FedAH: Aggregated Head for Personalized Federated Learning
 
-![fedah](D:\workspace\PycharmProjects\FedAH\fedah.png)
+![fedah](./fedah.png)
 
 
 
-![fedah_client](D:\workspace\PycharmProjects\FedAH\fedah_client.png)
+![fedah_client](./fedah_client.png)
+
+
 
 This project [FedAH](https://github.com/heyuepeng/FedAH) is based on the open source project [PFLlib](https://github.com/TsingZ0/PFLlib) development.
 
 [![License: GPL v2](https://camo.githubusercontent.com/1b537d3212c421e0362b9c7168f1febd83941d79e8ccd8487309a4a759f7da11/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c6963656e73652d47504c5f76322d626c75652e737667)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) [![arXiv](https://camo.githubusercontent.com/ca1d27a07f5525f7d380d41c70a877b7af62e55c39c1199e15129854ab949391/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f61725869762d323331322e30343939322d6233316231622e737667)](https://arxiv.org/abs/2312.04992)
 
-[![img](https://github.com/heyuepeng/PFLlibVSP/raw/main/structure.png)](https://github.com/heyuepeng/PFLlibVSP/blob/main/structure.png)
+![img](https://github.com/heyuepeng/PFLlibVSP/raw/main/structure.png)(https://github.com/heyuepeng/PFLlibVSP/blob/main/structure.png)
 
 
 
